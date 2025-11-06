@@ -5,4 +5,5 @@ export default interface EnhancedCRMContainerConfig {
   url: string;
   should_display_url_when_no_tasks: boolean;
   display_url_when_no_tasks: string;
+  should_display_tabs: boolean;
 }
