@@ -57,7 +57,6 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
             <ChatLog>
                 {
                     (this.state.messages ?? [])?.map((message) => {
-                        console.log(message);
                         let dateTime: string = message.dateCreated;
                         const uuidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
                         if (message.author.startsWith("whatsapp:") || message.author.startsWith("+") || uuidPattern.test(message.author) || message.author === 'Virtual Assistant') {
