@@ -425,6 +425,9 @@
       },
       "conversation_history": {
         "enabled": false
+      },
+      "hubspot_integration": {
+        "enabled": false
       }
     }
   }
