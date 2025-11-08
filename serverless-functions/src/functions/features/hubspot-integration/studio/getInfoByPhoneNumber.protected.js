@@ -7,8 +7,16 @@ const requiredParameters = [
 
 exports.handler = prepareStudioFunction(requiredParameters, async (context, event, callback, response, handleError) => {
     try {
-        const phoneNumber = event.phoneNumber;
-        const result = '';
+        const phoneNumber = event.phoneNumber?.replace('whatsapp:', '');
+
+        // TODO: Hubspot
+
+        const result = {
+            name: 'André Silva',
+            contactId: '77777',
+            orgId: '123',
+            businessId: '456'
+        };
 
         response.setStatusCode(200);
         response.setBody({ ...extractStandardResponse(result) });
