@@ -9,13 +9,15 @@ exports.handler = prepareStudioFunction(requiredParameters, async (context, even
     try {
         const phoneNumber = event.phoneNumber?.replace('whatsapp:', '');
 
-        // TODO: Hubspot
+        // TODO: Get Info from Hubspot
+        // Use context.HUBSPOT_ACCESS_TOKEN
 
+        // mock data
         const result = {
-            name: 'André Silva',
-            contactId: '77777',
-            orgId: '123',
-            businessId: '456'
+            name: 'Gabriel Rocha',
+            objectTypeId: '0-3',
+            objectId: '48359177752',
+            instanceId: '50090256'
         };
 
         response.setStatusCode(200);

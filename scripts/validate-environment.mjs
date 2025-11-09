@@ -8,7 +8,7 @@ import { isMatch } from "./common/fetch-cli.mjs";
 const regionUrl = process.env.TWILIO_REGION ? `${process.env.TWILIO_REGION}.twilio.com` : 'twilio.com';
 
 // The list of environment variables required for a successful deployment
-const REQUIRED_ENV_VARS = ["ENVIRONMENT", "TWILIO_API_KEY", "TWILIO_API_SECRET", "TWILIO_ACCOUNT_SID", "HUBSPOT_API_KEY"];
+const REQUIRED_ENV_VARS = ["ENVIRONMENT", "TWILIO_API_KEY", "TWILIO_API_SECRET", "TWILIO_ACCOUNT_SID", "HUBSPOT_ACCESS_TOKEN"];
 
 // As documented, we support currently-maintained versions of Flex UI 2.x only
 // This value should be incremented over time as we drop support for older versions
