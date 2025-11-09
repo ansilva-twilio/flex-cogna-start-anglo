@@ -428,7 +428,7 @@
         "enabled": true
       },
       "hubspot_integration": {
-        "enabled": false,
+        "enabled": true,
         "initialFirstPanelSize": "512px"
       }
     }
