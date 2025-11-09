@@ -404,7 +404,7 @@
       "branding": {
         "enabled": true,
         "custom_logo_url": "https://liceu.startangloschool.com.br/hs-fs/hubfs/fundo%20claro.png?width=2382&height=1305&name=fundo%20claro.png",
-        "use_custom_colors": false,
+        "use_custom_colors": true,
         "custom_colors": {
           "main_header_background": "#1baa83",
           "side_nav_background": "#f0f2f3",
