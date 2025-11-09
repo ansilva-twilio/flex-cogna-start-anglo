@@ -9,7 +9,7 @@ const requiredParameters = [
 exports.handler = prepareFlexFunction(requiredParameters, async (context, event, callback, response, handleError) => {
     try {
         const conversationSid = event.conversationSid;
-        const result = '';
+        const result = {};
 
         //const conversation = await manager.conversationsClient.getConversationBySid(conversationSid);
         //const messages = (await conversation.getMessages())?.items.map(m => { m.author, m.body, m.contentSid, m.dateCreated, m.dateUpdated, m.type });
@@ -18,7 +18,7 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
         // TODO: save object in Hubspot
 
         response.setStatusCode(200);
-        response.setBody({ ...extractStandardResponse(result) });
+        response.setBody(result);
         return callback(null, response);
     } catch (error) {
         return handleError(error);

@@ -19,7 +19,7 @@ exports.handler = prepareStudioFunction(requiredParameters, async (context, even
         };
 
         response.setStatusCode(200);
-        response.setBody({ ...extractStandardResponse(result) });
+        response.setBody(result);
         return callback(null, response);
     } catch (error) {
         return handleError(error);
