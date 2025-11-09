@@ -77,11 +77,12 @@
       },
       "enhanced_crm_container": {
         "enabled": true,
-        "url": "{{serverless.url}}/features/enhanced-crm-container/index.html?line1={{task.from}}&line2={{task.direction}}",
+        "url": "https://app.hubspot.com/contacts/{{task.instanceId}}/record/{{task.objectTypeId}}/{{task.objectId}}",
         "should_display_url_when_no_tasks": true,
         "display_url_when_no_tasks": "{{serverless.url}}/features/enhanced-crm-container/index.html",
         "enable_url_tab": true,
-        "url_tab_title": "Web Page"
+        "url_tab_title": "Hubspot",
+        "should_display_tabs": false
       },
       "internal_call": {
         "enabled": true,
@@ -225,7 +226,7 @@
         }
       },
       "dispositions": {
-        "enabled": true,
+        "enabled": false,
         "enable_notes": true,
         "global": {
           "require_disposition": false,
@@ -263,7 +264,7 @@
         "enable_audit_logging": true
       },
       "localization": {
-        "enabled": false,
+        "enabled": true,
         "show_menu": true
       },
       "park_interaction": {
@@ -401,16 +402,16 @@
         "enabled": true
       },
       "branding": {
-        "enabled": false,
-        "custom_logo_url": "",
+        "enabled": true,
+        "custom_logo_url": "https://liceu.startangloschool.com.br/hs-fs/hubfs/fundo%20claro.png?width=2382&height=1305&name=fundo%20claro.png",
         "use_custom_colors": false,
         "custom_colors": {
-          "main_header_background": "rgb(6, 3, 58)",
-          "side_nav_background": "rgb(255, 255, 255)",
-          "side_nav_border": "rgb(202, 205, 216)",
+          "main_header_background": "#1baa83",
+          "side_nav_background": "#f0f2f3",
+          "side_nav_border": "#1baa83",
+          "side_nav_hover_background": "#f0f2f344",
           "side_nav_icon": "rgb(18, 28, 45)",
-          "side_nav_selected_icon": "rgb(2, 99, 224)",
-          "side_nav_hover_background": "rgb(225, 227, 234)"
+          "side_nav_selected_icon": "rgb(2, 99, 224)"
         },
         "component_theme_overrides": {}
       },
@@ -424,10 +425,11 @@
         "exclude_queues": []
       },
       "conversation_history": {
-        "enabled": false
+        "enabled": true
       },
       "hubspot_integration": {
-        "enabled": false
+        "enabled": false,
+        "initialFirstPanelSize": "512px"
       }
     }
   }
