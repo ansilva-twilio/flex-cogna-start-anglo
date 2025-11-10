@@ -9,12 +9,14 @@ export interface HubspotIntegrationServiceResponse {
 
 class HubspotIntegrationService extends ApiService {
 
-    async saveConversation(conversationSid: string): Promise<HubspotIntegrationServiceResponse> {
+    async saveConversation(conversationSid: string, contactId: string, contactName: string): Promise<HubspotIntegrationServiceResponse> {
         const manager = Flex.Manager.getInstance();
 
         const encodedParams: EncodedParams = {
             Token: encodeURIComponent(manager.user.token),
-            conversationSid: encodeURIComponent(conversationSid)
+            conversationSid: encodeURIComponent(conversationSid),
+            contactId: encodeURIComponent(contactId),
+            contactName: encodeURIComponent(contactName)
         };
 
         return this.fetchJsonWithReject<HubspotIntegrationServiceResponse>(
