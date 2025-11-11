@@ -31,7 +31,7 @@ type MessageTrimmed = {
 type Media = {
     filename: string,
     content_type: string,
-    size: BigInteger;
+    size?: number;
 }
 
 type MyState = {
@@ -49,7 +49,7 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
 
     async componentDidMount() {
         const fetchMessagesRequest = await ConversationHistoryService.fetchConversationMessages(this.props.conversationSid);
-        this.setState({ messages: fetchMessagesRequest.messages });
+        this.setState({ messages: fetchMessagesRequest?.messages ?? [] });
     }
 
     render() {
@@ -64,7 +64,12 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
                                 <ChatMessage variant="inbound" key={message.index}>
                                     <ChatBubble >{message.body}</ChatBubble>
                                     {
-                                        (message.media ?? [])?.map((media: any, index: any) => {
+                                        (message.media ?
+                                            (Array.isArray(JSON.parse(message.media)) ?
+                                                JSON.parse(message.media)
+                                                : [JSON.parse(message.media)])
+                                            : []
+                                        )?.map((media: any, index: any) => {
                                             if (!media) {
                                                 return;
                                             }
@@ -93,7 +98,7 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
                             )
                         }
                         else {
-                            let author = message.author;
+                            let author = message.author || '-';
                             if (author === this.props.conversationSid) {
                                 author = "Agente Virtual";
                             }
@@ -102,7 +107,12 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
                                 <ChatMessage variant="outbound" key={message.index}>
                                     <ChatBubble >{message.body}</ChatBubble>
                                     {
-                                        (message.media ?? [])?.map((media: Media, index: React.Key) => {
+                                        (message.media ?
+                                            (Array.isArray(JSON.parse(message.media)) ?
+                                                JSON.parse(message.media)
+                                                : [JSON.parse(message.media)])
+                                            : []
+                                        )?.map((media: Media, index: React.Key) => {
                                             if (!media) {
                                                 return;
                                             }
