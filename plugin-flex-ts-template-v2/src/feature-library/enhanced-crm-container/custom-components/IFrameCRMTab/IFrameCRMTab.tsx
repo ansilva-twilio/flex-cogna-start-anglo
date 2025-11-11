@@ -19,7 +19,7 @@ export const IFrameCRMTab = ({ task }: Props) => {
 
   let baseUrl = displayUrlWhenNoTasks();
   if (task) {
-    if (task.attributes?.contactId != 0) {
+    if (task.attributes?.objectId != 0) {
       baseUrl = getUrl();
     } else {
       baseUrl = displayUrlWhenNotFound();
