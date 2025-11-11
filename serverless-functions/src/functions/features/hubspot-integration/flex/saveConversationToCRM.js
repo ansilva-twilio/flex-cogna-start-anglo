@@ -40,7 +40,7 @@ function formatAuthor(author, contactName) {
     return newAuthor;
 }
 
-function buildNote(messages, contactName) {
+function buildNote(messages, contactName, conversationSid) {
     let html =
         `<strong>📱 Conversa via WhatsApp (via Twilio Flex - ${conversationSid})</strong><br />` +
         `---<br /><br />` +
@@ -109,7 +109,7 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
 
         const conversation = await client.conversations.v1.conversations(conversationSid);
         const messages = await conversation.messages.list();
-        const noteBody = buildNote(messages, contactName);
+        const noteBody = buildNote(messages, contactName, conversationSid);
 
         console.log("[Serverless Functions] [Save to Hubspot] [Flex] Note built", noteBody);
 
