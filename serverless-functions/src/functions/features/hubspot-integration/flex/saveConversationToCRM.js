@@ -25,7 +25,7 @@ function formatDate(isoString) {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
 
-function formatAuthor(author, contactName) {
+function formatAuthor(author, contactName, conversationSid) {
     let newAuthor = '';
     if (author != null) {
         newAuthor = author;
@@ -47,7 +47,7 @@ function buildNote(messages, contactName, conversationSid) {
         `<strong>🗒️ Transcript:</strong><br /><br />`;
 
     messages.forEach(message => {
-        html += `<strong>${formatAuthor(message.author, contactName)}</strong> (${formatDate(message.dateCreated)}): ${message.body}<br />`;
+        html += `<strong>${formatAuthor(message.author, contactName, conversationSid)}</strong> (${formatDate(message.dateCreated)}): ${message.body}<br />`;
     });
 
     console.log('HTML', html);
