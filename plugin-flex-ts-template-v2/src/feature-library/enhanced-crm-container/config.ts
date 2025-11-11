@@ -9,6 +9,7 @@ const {
   should_display_url_when_no_tasks = false,
   should_display_tabs = true,
   display_url_when_no_tasks = '',
+  display_url_when_not_found = ''
 } = (getFeatureFlags()?.features?.enhanced_crm_container as EnhancedCRMContainerConfig) || {};
 
 export const isFeatureEnabled = () => {
@@ -25,6 +26,10 @@ export const shouldDisplayTabs = () => {
 
 export const displayUrlWhenNoTasks = () => {
   return display_url_when_no_tasks;
+};
+
+export const displayUrlWhenNotFound = () => {
+  return display_url_when_not_found;
 };
 
 export const getUrl = () => {
