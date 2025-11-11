@@ -73,22 +73,32 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
                                             if (!media) {
                                                 return;
                                             }
-                                            let filename = media.filename;
-                                            let content_type = media.content_type;
-                                            if (!filename) {
-                                                filename = 'undefined';
+                                            try {
+                                                let filename = media.filename;
+                                                let content_type = media.content_type;
+                                                if (!filename) {
+                                                    filename = 'undefined';
+                                                }
+                                                if (!content_type) {
+                                                    content_type = 'undefined';
+                                                }
+                                                return (
+                                                    <ChatBubble key={index}>
+                                                        <ChatAttachment attachmentIcon={<Icon icon="Whatsapp" />} >
+                                                            <ChatAttachmentLink href='#'>{filename}</ChatAttachmentLink>
+                                                            <ChatAttachmentDescription>{content_type}</ChatAttachmentDescription>
+                                                        </ChatAttachment>
+                                                    </ChatBubble>
+                                                )
+                                            } catch (e) {
+                                                console.log('ERROR', e);
+                                                const errorKey = `error-media-${index}`;
+                                                return (
+                                                    <ChatBubble key={errorKey}>
+                                                        (Não foi possível carregar o arquivo de mídia)
+                                                    </ChatBubble>
+                                                )
                                             }
-                                            if (!content_type) {
-                                                content_type = 'undefined';
-                                            }
-                                            return (
-                                                <ChatBubble key={index}>
-                                                    <ChatAttachment attachmentIcon={<Icon icon="Whatsapp" />} >
-                                                        <ChatAttachmentLink href='#'>{filename}</ChatAttachmentLink>
-                                                        <ChatAttachmentDescription>{content_type}</ChatAttachmentDescription>
-                                                    </ChatAttachment>
-                                                </ChatBubble>
-                                            )
                                         })
                                     }
                                     <ChatMessageMeta aria-label="customer" >
@@ -116,22 +126,32 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
                                             if (!media) {
                                                 return;
                                             }
-                                            let filename = media.filename;
-                                            let content_type = media.content_type;
-                                            if (!filename) {
-                                                filename = 'undefined';
+                                            try {
+                                                let filename = media.filename;
+                                                let content_type = media.content_type;
+                                                if (!filename) {
+                                                    filename = 'undefined';
+                                                }
+                                                if (!content_type) {
+                                                    content_type = 'undefined';
+                                                }
+                                                return (
+                                                    <ChatBubble key={index}>
+                                                        <ChatAttachment attachmentIcon={<Icon icon="Whatsapp" />}>
+                                                            <ChatAttachmentLink href='#'>{filename}</ChatAttachmentLink>
+                                                            <ChatAttachmentDescription>{content_type}</ChatAttachmentDescription>
+                                                        </ChatAttachment>
+                                                    </ChatBubble>
+                                                )
+                                            } catch (e) {
+                                                console.log('ERROR', e);
+                                                const errorKey = `error-media-${index}`;
+                                                return (
+                                                    <ChatBubble key={errorKey}>
+                                                        (Não foi possível carregar o arquivo de mídia)
+                                                    </ChatBubble>
+                                                )
                                             }
-                                            if (!content_type) {
-                                                content_type = 'undefined';
-                                            }
-                                            return (
-                                                <ChatBubble key={index}>
-                                                    <ChatAttachment attachmentIcon={<Icon icon="Whatsapp" />}>
-                                                        <ChatAttachmentLink href='#'>{filename}</ChatAttachmentLink>
-                                                        <ChatAttachmentDescription>{content_type}</ChatAttachmentDescription>
-                                                    </ChatAttachment>
-                                                </ChatBubble>
-                                            )
                                         })
                                     }
                                     <ChatMessageMeta aria-label="agent" >
