@@ -1,3 +1,4 @@
+const axios = require('axios');
 const { prepareFlexFunction, extractStandardResponse, twilioExecute } = require(Runtime.getFunctions()[
     'common/helpers/function-helper'
 ].path);
@@ -55,45 +56,50 @@ function buildNote(messages, contactName, conversationSid) {
 }
 
 async function saveNoteToHubspot(noteBody, contactCRMId, hubspotAccessToken) {
+    try {
+        // 202 = Contact, 214 = Deal
+        const associationTypeId = 202;
+        const noteData = {
+            properties: {
+                hs_timestamp: new Date().toISOString(),
+                hs_note_body: noteBody
+            },
+            associations: [
+                {
+                    to: {
+                        id: parseInt(contactCRMId)
+                    },
+                    types: [
+                        {
+                            associationCategory: 'HUBSPOT_DEFINED',
+                            associationTypeId: associationTypeId
+                        }
+                    ]
+                }
+            ]
+        };
 
-    // 202 = Contact, 214 = Deal
-    const associationTypeId = 202;
-    const noteData = {
-        properties: {
-            hs_timestamp: new Date().toISOString(),
-            hs_note_body: noteBody
-        },
-        associations: [
-            {
-                to: {
-                    id: parseInt(contactCRMId)
-                },
-                types: [
-                    {
-                        associationCategory: 'HUBSPOT_DEFINED',
-                        associationTypeId: associationTypeId
-                    }
-                ]
-            }
-        ]
-    };
+        console.log('Criando nota no HubSpot:', JSON.stringify(noteData));
 
-    console.log('Criando nota no HubSpot:', noteData);
+        let config = {
+            method: 'post',
+            url: 'https://api.hubapi.com/crm/v3/objects/notes',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${hubspotAccessToken}`
+            },
+            data: JSON.stringify(noteData)
+        };
 
-    let config = {
-        method: 'post',
-        url: 'https://api.hubapi.com/crm/v3/objects/notes',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${hubspotAccessToken}`
-        },
-        data: JSON.stringify(noteData)
-    };
+        const response = await axios.request(config)?.data;
 
-    const response = await axios.request(config);
-
-    console.log('Nota criada com sucesso:', response);
-    return response;
+        console.log('Nota criada com sucesso:', response);
+        return response;
+    }
+    catch (e) {
+        console.log('ERROR', e);
+        throw e;
+    }
 }
 
 exports.handler = prepareFlexFunction(requiredParameters, async (context, event, callback, response, handleError) => {
@@ -113,7 +119,7 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
 
         console.log("[Serverless Functions] [Save to Hubspot] [Flex] Note built", noteBody);
 
-        const hubspotData = await saveNoteToHubspot(noteBody, contactId, hubspotAccessToken)?.data;
+        const hubspotData = await saveNoteToHubspot(noteBody, contactId, hubspotAccessToken);
         const result = { success: true };
 
         console.log("[Serverless Functions] [Save to Hubspot] [Flex] Note Saved", hubspotData);
