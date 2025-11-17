@@ -4,12 +4,7 @@
     "common": {
       "log_level": "info",
       "audit_log_ttl": 1209600,
-      "teams": [
-        "Blue Team",
-        "Red Team",
-        "Gold Team",
-        "VIP Team"
-      ],
+      "teams": ["Blue Team", "Red Team", "Gold Team", "VIP Team"],
       "departments": [
         "General Management",
         "Marketing",
@@ -244,10 +239,7 @@
         "per_queue": {
           "exampleQueueName": {
             "require_disposition": true,
-            "dispositions": [
-              "Promotional Sale",
-              "Renewal"
-            ],
+            "dispositions": ["Promotional Sale", "Renewal"],
             "text_attributes": [],
             "select_attributes": []
           }
@@ -423,6 +415,9 @@
         "exclude_queues": []
       },
       "conversation_history": {
+        "enabled": true
+      },
+      "conversation_stories": {
         "enabled": true
       },
       "hubspot_integration": {
