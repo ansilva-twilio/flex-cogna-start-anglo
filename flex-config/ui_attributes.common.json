@@ -78,7 +78,7 @@
         "display_url_when_not_found": "{{serverless.url}}/features/enhanced-crm-container/notfound.html",
         "enable_url_tab": true,
         "url_tab_title": "Hubspot",
-        "should_display_tabs": false
+        "should_display_tabs": true
       },
       "internal_call": {
         "enabled": true,
