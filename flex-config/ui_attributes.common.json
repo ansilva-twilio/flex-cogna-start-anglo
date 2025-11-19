@@ -78,7 +78,7 @@
         "display_url_when_not_found": "{{serverless.url}}/features/enhanced-crm-container/notfound.html",
         "enable_url_tab": true,
         "url_tab_title": "Hubspot",
-        "should_display_tabs": true
+        "should_display_tabs": false
       },
       "internal_call": {
         "enabled": true,
@@ -417,12 +417,9 @@
       "conversation_history": {
         "enabled": true
       },
-      "conversation_stories": {
-        "enabled": true
-      },
       "hubspot_integration": {
         "enabled": true,
-        "initialFirstPanelSize": "512px"
+        "initialFirstPanelSize": "380px"
       }
     }
   }
