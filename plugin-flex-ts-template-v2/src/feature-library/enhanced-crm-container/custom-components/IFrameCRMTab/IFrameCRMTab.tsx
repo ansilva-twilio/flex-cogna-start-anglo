@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { IconButton, ITask } from '@twilio/flex-ui';
 
 import { IFrameRefreshButtonStyledDiv } from './IFrameCRMTab.Styles';
@@ -26,13 +26,28 @@ export const IFrameCRMTab = ({ task }: Props) => {
     }
   }
   const url = replaceStringAttributes(baseUrl, task);
+  // eslint-disable-next-line no-console
+  console.debug('[IFrameCRMTab]', {
+    taskSid: task?.taskSid,
+    taskAttributesFrom: task?.attributes?.from,
+    taskAttributesDirection: task?.attributes?.direction,
+    baseUrl,
+    finalUrl: url,
+  });
 
   return (
-    <>
+    <div style={{ display: 'flex', flex: '1 1 auto', minHeight: 0 }}>
       <IFrameRefreshButtonStyledDiv onClick={handleOnClick}>
         <IconButton variant="primary" icon="Loading" />
       </IFrameRefreshButtonStyledDiv>
-      <iframe key={iFrameKey} src={url} ref={iFrameRef} />
-    </>
+      <iframe
+        key={iFrameKey}
+        src={url}
+        ref={iFrameRef}
+        title="enhanced-crm-iframe"
+        data-crm-url={url}
+        style={{ flex: '1 1 auto', width: '100%', height: '100%', border: '0', minHeight: 200 }}
+      />
+    </div>
   );
 };
