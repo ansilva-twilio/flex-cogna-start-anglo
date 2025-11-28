@@ -45,8 +45,6 @@ function makeHttpsRequest(url, headers = {}) {
     });
 }
 
-
-
 exports.handler = prepareFlexFunction(requiredParameters, async (context, event, callback, response, handleError) => {
     console.log('[Serverless Functions] [Conversation History] [Flex] Fetching media content', {
         conversationSid: event.conversationSid,
@@ -100,14 +98,35 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
             throw new Error('No content_direct_temporary URL found in metadata');
         }
 
-        console.log('[fetchMediaContent] Redirecting to temporary URL');
+        console.log('[fetchMediaContent] Returning HTML redirect to temporary URL');
 
-        // Redirect to the signed temporary URL
-        response.setStatusCode(302);
-        response.appendHeader('Location', directUrl);
-        response.appendHeader('Access-Control-Allow-Origin', '*');
+        // Return HTML with client-side redirect to avoid serverless framework appending query params
+        // which breaks the signed URL signature (double '?' issue)
+        response.setStatusCode(200);
+        response.setHeaders({
+            'Content-Type': 'text/html',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        });
 
-        callback(null, response);
+        const html = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta http-equiv="refresh" content="0;url=${directUrl}" />
+                <script>window.location.href = "${directUrl}";</script>
+            </head>
+            <body>
+                <p>Redirecting to media content...</p>
+                <p>If you are not redirected automatically, <a href="${directUrl}">click here</a>.</p>
+            </body>
+            </html>
+        `;
+
+        response.setBody(html);
+
+        return callback(null, response);
 
     } catch (error) {
         console.error('[Serverless Functions] [Conversation History] [Flex] Error:', error);
@@ -116,6 +135,6 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
             success: false,
             error: error.message
         });
-        callback(null, response);
+        return callback(null, response);
     }
 });
