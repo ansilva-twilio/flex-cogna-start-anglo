@@ -21,6 +21,7 @@ async function getConversationMessages(client, conversationSid) {
     index: m.index,
     author: m.author,
     body: m.body,
+    // Include complete media object with all properties including sid
     media: m.media != null ? JSON.stringify(m.media) : null,
     dateCreated: m.dateCreated
   }));
