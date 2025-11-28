@@ -27,16 +27,33 @@ export default (text: string, task?: ITask): string => {
     } else if (part1 === 'serverless') {
       return replaceStringServiceInstance.serverlessUrl;
     } else {
-      return match;
+      // No task provided but template requires task attributes
+      // eslint-disable-next-line no-console
+      console.warn('[replaceStringAttributes] No task provided for template requiring task attributes', {
+        match,
+        part1,
+        part2,
+      });
+      return `[MISSING:${part1}.${part2}]`;
     }
 
-    return part2.split('.').reduce((accumulator: any, current, _index, array) => {
-      if (!accumulator[current]) {
+    const result = part2.split('.').reduce((accumulator: any, current, _index, array) => {
+      if (!accumulator || !accumulator[current]) {
+        // Attribute is missing
+        // eslint-disable-next-line no-console
+        console.warn('[replaceStringAttributes] Missing attribute', {
+          fullPath: `${part1}.${part2}`,
+          missingAt: current,
+          taskSid: task?.taskSid,
+        });
         // abort early by removing the rest of the array
         array.splice(1);
-        return '';
+        return null;
       }
       return accumulator[current];
     }, attributes);
+
+    // Return placeholder if attribute was not found
+    return result !== null ? result : `[MISSING:${part1}.${part2}]`;
   });
 };

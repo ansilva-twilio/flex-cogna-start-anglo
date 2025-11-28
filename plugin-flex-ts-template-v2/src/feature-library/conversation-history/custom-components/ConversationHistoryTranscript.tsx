@@ -32,6 +32,7 @@ type Media = {
     filename: string,
     content_type: string,
     size?: number;
+    sid?: string;
 }
 
 type MyState = {
@@ -50,6 +51,47 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
     async componentDidMount() {
         const fetchMessagesRequest = await ConversationHistoryService.fetchConversationMessages(this.props.conversationSid);
         this.setState({ messages: fetchMessagesRequest?.messages ?? [] });
+    }
+
+    // Helper function to get media URL via serverless function
+    // We use a serverless function because direct API calls require server-side authentication
+    getMediaUrl(media: Media): string {
+        if (!media.sid) {
+            console.warn('[ConversationHistory] Media object missing sid', media);
+            return '#';
+        }
+
+        const manager = Flex.Manager.getInstance();
+        let serverlessDomain = manager.serviceConfiguration.runtime_domain;
+        const token = manager.user.token; // Get Flex token for authentication
+
+        // Detect if running locally
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.includes('172.27');
+
+        if (isLocalhost) {
+            // Use local serverless development server
+            serverlessDomain = 'localhost:3001';
+            console.log('[ConversationHistory] Using local serverless domain:', serverlessDomain);
+        } else {
+            // Fallback to the correct serverless domain if runtime_domain is outdated
+            // TODO: Update Flex configuration to point to the correct domain
+            if (!serverlessDomain || serverlessDomain === 'concrete-longhorn-6910.twil.io') {
+                serverlessDomain = 'custom-flex-extensions-serverless-8888-dev.twil.io';
+                console.warn('[ConversationHistory] Using fallback serverless domain:', serverlessDomain);
+            } else {
+                console.log('[ConversationHistory] Serverless domain from config:', serverlessDomain);
+            }
+        }
+
+        // Use serverless function to get authenticated media URL
+        // The serverless function has proper credentials and returns a temporary URL
+        // We pass the Flex token for authentication
+        const conversationSid = this.props.conversationSid;
+        const protocol = isLocalhost ? 'http' : 'https';
+        const url = `${protocol}://${serverlessDomain}/features/conversation-history/flex/fetchMediaContent?conversationSid=${conversationSid}&mediaSid=${media.sid}&Token=${token}`;
+
+        console.log('[ConversationHistory] Generated media URL (token hidden)');
+        return url;
     }
 
     render() {
@@ -82,10 +124,11 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
                                                 if (!content_type) {
                                                     content_type = 'undefined';
                                                 }
+                                                const mediaUrl = this.getMediaUrl(media);
                                                 return (
                                                     <ChatBubble key={index}>
                                                         <ChatAttachment attachmentIcon={<Icon icon="Whatsapp" />} >
-                                                            <ChatAttachmentLink href='#'>{filename}</ChatAttachmentLink>
+                                                            <ChatAttachmentLink href={mediaUrl} download={filename}>{filename}</ChatAttachmentLink>
                                                             <ChatAttachmentDescription>{content_type}</ChatAttachmentDescription>
                                                         </ChatAttachment>
                                                     </ChatBubble>
@@ -135,10 +178,11 @@ class ConversationHistoryTranscript extends React.Component<MyProps, MyState> {
                                                 if (!content_type) {
                                                     content_type = 'undefined';
                                                 }
+                                                const mediaUrl = this.getMediaUrl(media);
                                                 return (
                                                     <ChatBubble key={index}>
                                                         <ChatAttachment attachmentIcon={<Icon icon="Whatsapp" />}>
-                                                            <ChatAttachmentLink href='#'>{filename}</ChatAttachmentLink>
+                                                            <ChatAttachmentLink href={mediaUrl} download={filename}>{filename}</ChatAttachmentLink>
                                                             <ChatAttachmentDescription>{content_type}</ChatAttachmentDescription>
                                                         </ChatAttachment>
                                                     </ChatBubble>
